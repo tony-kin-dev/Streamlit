@@ -18,14 +18,17 @@ def load_fake_data():
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
     # Средние температуры по месяцам (Москва, примерно)
     base_temps = [-8, -7, 0, 8, 17, 21, 24, 23, 16, 8, 1, -5]
+    # Базовые значения количества точек продаж по месяцам (зимой меньше, летом больше)
+    base_shops = [12, 13, 15, 17, 20, 23, 26, 25, 22, 18, 15, 13]
     data = []
     for city in cities:
-        # Для каждого города добавим небольшой сдвиг температуры
         city_temp_shift = np.random.normal(0, 2)
+        city_shops_shift = np.random.randint(-2, 3)  # небольшой сдвиг для города
         for i, month in enumerate(months):
             avg_temp = base_temps[i] + city_temp_shift + np.random.normal(0, 1)
-            shops = np.random.randint(10, 30)
-            # Продажи: зимой низкие, летом высокие, зависят от температуры и числа точек
+            # Плавное изменение количества точек продаж по месяцам
+            shops = base_shops[i] + city_shops_shift + np.random.randint(-1, 2)
+            shops = max(10, shops)  # не меньше 10
             base_sales = max(0, 10 + (avg_temp if avg_temp > 0 else 0) * 4)
             sales = int(np.random.normal(loc=base_sales + shops * 2, scale=8))
             sales = max(0, sales)
@@ -54,7 +57,16 @@ st.write(df.describe())
 st.header('3. Распределения признаков')
 feature = st.selectbox('Выберите числовой признак для гистограммы:', ['Продажи (тыс. шт.)', 'Средняя температура (°C)', 'Количество точек продаж'])
 fig, ax = plt.subplots()
-sns.histplot(df[feature], kde=True, ax=ax)
+n_bins = 8
+hist = sns.histplot(df[feature], kde=True, ax=ax, bins=n_bins, color='skyblue', edgecolor='black')
+# Получаем границы бинов
+bins = hist.patches
+if bins:
+    bin_centers = [patch.get_x() + patch.get_width()/2 for patch in bins]
+    ax.set_xticks(bin_centers)
+    ax.set_xticklabels([f'{x:.0f}' for x in bin_centers])
+ax.set_xlabel(feature)
+ax.set_ylabel('Count')
 st.pyplot(fig)
 # --- Сделайте скриншот этого блока ---
 
