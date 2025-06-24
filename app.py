@@ -45,7 +45,8 @@ df = load_fake_data()
 
 # Просмотр данных
 st.header('1. Просмотр данных')
-st.write(df.head())
+selected_city = st.selectbox('Выберите город:', df['Город'].unique())
+st.write(df[df['Город'] == selected_city])
 # --- Сделайте скриншот этого блока ---
 
 # Описательные статистики
