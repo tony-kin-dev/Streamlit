@@ -71,9 +71,9 @@ ax.set_ylabel('Count')
 st.pyplot(fig)
 # --- Сделайте скриншот этого блока ---
 
-# Boxplot по городам
-st.header('4. Boxplot по городам')
-feature2 = st.selectbox('Выберите признак для boxplot:', ['Продажи (тыс. шт.)', 'Средняя температура (°C)', 'Количество точек продаж'], key='box')
+# Диаграмма размаха по городам
+st.header('4. Диаграмма размаха по городам')
+feature2 = st.selectbox('Выберите признак для диаграммы размаха:', ['Продажи (тыс. шт.)', 'Средняя температура (°C)', 'Количество точек продаж'], key='box')
 fig2, ax2 = plt.subplots()
 sns.boxplot(x='Город', y=feature2, data=df, ax=ax2)
 st.pyplot(fig2)
