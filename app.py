@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-st.title('EDA: Продажи мороженого (выдуманный датасет)')
+st.title('Продажи мороженого')
 
 st.markdown('''
 Это интерактивное приложение для разведочного анализа выдуманного датасета о продажах мороженого в разных городах и месяцах.\n
